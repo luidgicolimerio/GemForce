@@ -28,7 +28,8 @@ def jogar_carta(deck):
         if carta.get('geraGP') != None:
                     print("Gemas Rosas: ",carta.get('geraGP'))
         i += 1
-def comprar_carta(pontos, caravana):
+# Index error range precisa ser dinâmico:
+def comprar_carta(deck, deck_buildado, pontos, caravana):
     while True:
         escolha = input('Você deseja comprar um golem[1]\n ou comprar um mineiro[2]: ')
         try:
@@ -36,8 +37,11 @@ def comprar_carta(pontos, caravana):
         except ValueError:
              print('Você não digitou um número')
              continue
-        if escolha != 1 and 2:
-            print('Selecione uma opção válida!')
+        if escolha != 1:
+            if escolha != 2:
+                print('Selecione uma opção válida!')
+            else:
+                 break
         else:
              break
     if escolha == 1:
@@ -86,7 +90,7 @@ def comprar_carta(pontos, caravana):
                 print()
                 print(f'Você está com {pontos} pontos!') 
                 return "golem"
-            
+    
             except ValueError:
                  print('Digite um número')
                  continue
@@ -97,13 +101,79 @@ def comprar_carta(pontos, caravana):
     elif escolha == 2:
         print('Mineiros disponíveis para compra: ')
         for i in range(5):
-            print(cards.cartas_de_golem[i].get('nome'),"|", end=" ") # Trocar lista de golems por lista de mineiros
-            for nome, custo in cards.cartas_de_golem[i].items():     # Criar carta de mineradores
-                if nome != 'nome':
-                    print(nome," :", custo, end=" ")
+            print(cards.carta_de_mercado[i].get('tipo'),"|", end=" ") # Trocar lista de golems por lista de mineiros
+            for nome, custo in cards.carta_de_mercado[i].items():     # Criar carta de mineradores
+                if nome != 'tipo':
+                    if custo != None:
+                        print(nome," :", custo, end=" ")
+                print()
             print()
-             
-         
+        while True:
+            jogada = input('Escolha um mineiro para comprar: ')
+            try:
+                jogada = int(jogada)
+                carta = cards.carta_de_mercado[jogada]
+                if jogada == 0:
+                    deck.append(carta)
+                    deck_buildado.append(carta)
+                    cards.carta_de_mercado.pop(jogada)
+                    return "mercado"
+                if jogada == 1:
+                    if caravana.get('GY') > 1:
+                        novo_valor_gemas = caravana.get('GY') - 1
+                        caravana.update({'GY' : novo_valor_gemas})
+                        deck.append(carta)
+                        deck_buildado.append(carta)
+                        cards.carta_de_mercado.pop(jogada)
+                        return "mercado"
+                    else:
+                        print('Você não pode comprar essa carta')
+                        print('Tente comprar outra')
+                        continue
+                if jogada == 2:
+                    if caravana.get('GY') > 2:
+                        novo_valor_gemas = caravana.get('GY') - 2
+                        caravana.update({'GY' : novo_valor_gemas})
+                        deck.append(carta)
+                        deck_buildado.append(carta)
+                        cards.carta_de_mercado.pop(jogada)
+                        return "mercado"
+                    else:
+                        print('Você não pode comprar essa carta')
+                        print('Tente comprar outra')
+                        continue
+                if jogada == 3:
+                    if caravana.get('GY') > 3:
+                        novo_valor_gemas = caravana.get('GY') - 3
+                        caravana.update({'GY' : novo_valor_gemas})
+                        deck.append(carta)
+                        deck_buildado.append(carta)
+                        cards.carta_de_mercado.pop(jogada)
+                        return "mercado"
+                    else:
+                        print('Você não pode comprar essa carta')
+                        print('Tente comprar outra')
+                        continue
+                if jogada == 4:
+                    if caravana.get('GY') > 4:
+                        novo_valor_gemas = caravana.get('GY') - 4
+                        caravana.update({'GY' : novo_valor_gemas})
+                        deck.append(carta)
+                        deck_buildado.append(carta)
+                        cards.carta_de_mercado.pop(jogada)
+                        return "mercado"
+                    else:
+                        print('Você não pode comprar essa carta')
+                        print('Tente comprar outra')
+                        continue
+            except ValueError:
+                 print('Digite um número')
+            except IndexError:
+                print('Você não escolheu uma carta válida')
+                continue
+# Última função que precisa ser feita para o jogo estar completo
+def descansar(deck):
+    ...                  
 quantidade_de_players = input('Quantos jogadores irão jogar: ')
 try: 
     quantidade_de_players = int(quantidade_de_players)
@@ -192,6 +262,11 @@ while True:
                 print('Você não digitou um número')
                 continue
         if acao == 2:
-            comprou = comprar_carta(pontos_player_1, caravana_player_1)
+            comprou = comprar_carta(deck_player_1, deck_buildado_player_1,pontos_player_1, caravana_player_1)
             if comprou == "golem":
                 break
+            if comprou == "mercado":
+                break
+    # os.system('cls')
+    # print("Turno do Player 2: ")
+    # break

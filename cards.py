@@ -1,53 +1,53 @@
 caravana = {
-    "GY" : 7,
+    "GY" : 2,
     "GG" : 0,
     "GB" : 0,
     "GP" : 0,
 }
 carta_inicial_0 = {
-    "tipo" : "Mineiro",
+    "tipo" : "Mineiro 0",
     "geraGY" : 2,
     "geraGG" : None,
     "geraGB" : None,
     "geraGP" : None,
 }
 carta_mercado_0 = {
-    "tipo" : "Mineiro",
+    "tipo" : "Mineiro 1",
     "geraGY" : 1,
     "geraGG" : None,
     "geraGB" : None,
     "geraGP" : None,
 }
 carta_mercado_1 = {
-    "tipo" : "Mineiro",
+    "tipo" : "Mineiro 2",
     "geraGY" : 1,
     "geraGG" : None,
     "geraGB" : None,
     "geraGP" : None,
 }
 carta_mercado_2 = {
-    "tipo" : "Mineiro",
+    "tipo" : "Mineiro 3",
     "geraGY" : 2,
     "geraGG" : None,
     "geraGB" : None,
     "geraGP" : None,
 }
 carta_mercado_3 = {
-    "tipo" : "Mineiro",
+    "tipo" : "Mineiro 4",
     "geraGY" : None,
     "geraGG" : 2,
     "geraGB" : None,
     "geraGP" : None,
 }
 carta_mercado_4 = {
-    "tipo" : "Mineiro",
+    "tipo" : "Mineiro 5",
     "geraGY" : None,
     "geraGG" : 1,
     "geraGB" : 1,
     "geraGP" : None,
 }
 carta_mercado_5 = {
-    "tipo" : "Mineiro",
+    "tipo" : "Mineiro 6",
     "geraGY" : 6,
     "geraGG" : None,
     "geraGB" : None,
