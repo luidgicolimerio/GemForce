@@ -9,6 +9,12 @@ player_3 = False
 player_4 = False
 i = 0
 
+def opcoes():
+        print('Escolha uma opção de jogada: ')
+        print("Jogar uma carta [1]")
+        print("Comprar carta ou golem [2]")
+        print("Descansar [3]")
+    
 def jogar_carta(deck):
     global i
     for carta in deck:
@@ -28,7 +34,7 @@ def jogar_carta(deck):
         if carta.get('geraGP') != None:
                     print("Gemas Rosas: ",carta.get('geraGP'))
         i += 1
-# Index error range precisa ser dinâmico:
+
 def comprar_carta(deck, deck_buildado, pontos, caravana):
     while True:
         escolha = input('Você deseja comprar um golem[1]\n ou comprar um mineiro[2]: ')
@@ -46,7 +52,8 @@ def comprar_carta(deck, deck_buildado, pontos, caravana):
              break
     if escolha == 1:
         print('Golems disponíveis para compra: ')
-        for i in range(5):
+        tamanho = 5 if len(cards.cartas_de_golem) >= 5 else len(cards.cartas_de_golem)
+        for i in range(tamanho):
             print(cards.cartas_de_golem[i].get('nome'),"|", end=" ")
             for nome, custo in cards.cartas_de_golem[i].items():
                 if nome != 'nome':
@@ -100,15 +107,16 @@ def comprar_carta(deck, deck_buildado, pontos, caravana):
         
     elif escolha == 2:
         print('Mineiros disponíveis para compra: ')
-        for i in range(5):
-            print(cards.carta_de_mercado[i].get('tipo'),"|", end=" ") # Trocar lista de golems por lista de mineiros
-            for nome, custo in cards.carta_de_mercado[i].items():     # Criar carta de mineradores
+        tamanho = 5 if len(cards.carta_de_mercado) >= 5 else len(cards.carta_de_mercado)
+        for i in range(tamanho):
+            print(cards.carta_de_mercado[i].get('tipo'),"|", end=" ") 
+            for nome, custo in cards.carta_de_mercado[i].items():     
                 if nome != 'tipo':
                     if custo != None:
                         print(nome," :", custo, end=" ")
                 print()
             print()
-        while True:
+        while True:  # Estabelecer pontuação para determinar vencedor do jogo
             jogada = input('Escolha um mineiro para comprar: ')
             try:
                 jogada = int(jogada)
@@ -171,9 +179,11 @@ def comprar_carta(deck, deck_buildado, pontos, caravana):
             except IndexError:
                 print('Você não escolheu uma carta válida')
                 continue
-# Última função que precisa ser feita para o jogo estar completo
-def descansar(deck):
-    ...                  
+
+def descansar(deck, deck_buildado):
+    deck = deck_buildado.copy()
+    return deck                  
+
 quantidade_de_players = input('Quantos jogadores irão jogar: ')
 try: 
     quantidade_de_players = int(quantidade_de_players)
@@ -221,11 +231,8 @@ if  player_4:
 while True:
     print("Turno do Player 1: ")
 
-    while True:
-        print('Escolha uma opção de jogada: ')
-        print("Jogar uma carta [1]")
-        print("Comprar carta ou golem [2]")
-        print("Descansar [3]")
+    while player_1:
+        opcoes()
         acao = input("Digite a sua jogada: ")
         os.system('cls')
         i = 0
@@ -261,12 +268,65 @@ while True:
             except ValueError:
                 print('Você não digitou um número')
                 continue
+            break
         if acao == 2:
             comprou = comprar_carta(deck_player_1, deck_buildado_player_1,pontos_player_1, caravana_player_1)
             if comprou == "golem":
                 break
             if comprou == "mercado":
                 break
-    # os.system('cls')
-    # print("Turno do Player 2: ")
-    # break
+        if acao == 3:
+            deck_player_1 = descansar(deck_player_1, deck_buildado_player_1)
+            break
+    
+    os.system('cls')
+    print("Turno do Player 2: ")
+
+    while player_2:
+        opcoes()
+        acao = input("Digite a sua jogada: ")
+        os.system('cls')
+        i = 0
+        try:
+            acao = int(acao)
+        except ValueError:
+            print('Você não digitou um número')
+            continue
+        if acao == 1:
+            if deck_player_2 == []:
+                print('Você não tem cartas na sua mão, descanse ou compre uma carta')
+                continue
+            jogar_carta(deck_player_2)
+            jogada = input('Escolha a carta que deseja jogar:')
+            try:
+                jogada = int(jogada)
+                carta = deck_player_2[jogada]
+
+                if carta.get('tipo') == 'Mineiro':
+                    if carta.get('geraGY') != None:
+                        caravana_player_2['GY'] += carta.get('geraGY')
+                    if carta.get('geraGG') != None:
+                        caravana_player_2['GG'] += carta.get('geraGG')
+                    if carta.get('geraGB') != None:
+                        caravana_player_2['GB'] += carta.get('geraGB')
+                    if carta.get('geraGP') != None:
+                        caravana_player_2['GP'] += carta.get('geraGP')
+
+                deck_player_2.pop(jogada)
+                break
+            except IndexError:
+                print('Você não escolheu uma carta válida')
+                continue
+            except ValueError:
+                print('Você não digitou um número')
+                continue
+        if acao == 2:
+            comprou = comprar_carta(deck_player_2, deck_buildado_player_2,pontos_player_2, caravana_player_2)
+            if comprou == "golem":
+                break
+            if comprou == "mercado":
+                break
+        if acao == 3:
+            deck_player_2 = descansar(deck_player_2, deck_buildado_player_2)
+            break
+
